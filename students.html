@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Students — TKMCE Student Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --forest: #1F3A32;
+    --forest-light: #2A4C41;
+    --paper: #EEF0EA;
+    --panel: #FBFBF7;
+    --ink: #20261F;
+    --muted: #6B7266;
+    --gold: #C69214;
+    --gold-soft: #F1E2B8;
+    --rose: #A94A56;
+    --rose-soft: #F3DEE0;
+    --sage: #6E8B6A;
+    --sage-soft: #DEEBDA;
+    --line: #DBDCCF;
+    --radius: 4px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display{
+    font-family: 'Fraunces', serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  button{ font-family: inherit; cursor: pointer; }
+
+  .layout{
+    display: grid;
+    grid-template-columns: 232px 1fr;
+    min-height: 100vh;
+  }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar{
+    background: var(--forest);
+    color: #E7ECE4;
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+
+  .brand{
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    margin-bottom: 40px;
+  }
+
+  .brand-mark{
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--forest);
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+
+  .brand-name{
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    line-height: 1.2;
+  }
+  .brand-name span{
+    display: block;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 11px;
+    color: #A9BBA4;
+    margin-top: 2px;
+  }
+
+  nav{ display: flex; flex-direction: column; gap: 3px; flex: 1; }
+
+  .nav-item{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: var(--radius);
+    font-size: 14px;
+    color: #C7D2C2;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .nav-item:hover{ background: var(--forest-light); color: #fff; }
+  .nav-item.active{
+    background: var(--forest-light);
+    color: #fff;
+    box-shadow: inset 3px 0 0 var(--gold);
+  }
+  .nav-icon{
+    width: 17px; height: 17px; flex-shrink: 0;
+    opacity: 0.9;
+  }
+
+  .sidebar-foot{
+    border-top: 1px solid rgba(255,255,255,0.12);
+    padding-top: 16px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: #93A38D;
+    line-height: 1.5;
+  }
+
+  /* ---------- Main ---------- */
+  main{ padding: 34px 44px 60px; }
+
+  .topbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 34px;
+    gap: 24px;
+  }
+
+  .search{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 9px 14px;
+    width: 320px;
+    color: var(--muted);
+    font-size: 13.5px;
+  }
+  .search svg{ width: 15px; height: 15px; flex-shrink: 0; }
+  .search input{
+    border: none; outline: none; background: transparent;
+    font-family: inherit; font-size: 13.5px; color: var(--ink); width: 100%;
+  }
+
+  .topbar-right{ display: flex; align-items: center; gap: 18px; }
+
+  .term-note{ font-size: 13px; color: var(--muted); }
+  .term-note strong{ color: var(--ink); font-weight: 500; }
+
+  .avatar{
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--sage-soft);
+    color: var(--forest);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 14px;
+    border: 1px solid var(--line);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr 1fr;
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 40px;
+  }
+  .hero > div{
+    background: var(--panel);
+    padding: 24px 26px;
+  }
+  .hero-main .kicker{
+    font-size: 13px; color: var(--muted); margin-bottom: 10px;
+  }
+  .hero-main .big{
+    font-family: 'Fraunces', serif;
+    font-size: 52px;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--forest);
+  }
+  .hero-main .sub{
+    margin-top: 10px; font-size: 13px; color: var(--muted);
+  }
+  .hero-main .sub b{ color: var(--sage); font-weight: 600; }
+
+  .stat .kicker{ font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+  .stat .value{
+    font-family: 'Fraunces', serif;
+    font-size: 30px;
+    color: var(--ink);
+  }
+  .stat .delta{
+    margin-top: 8px; font-size: 12.5px;
+  }
+  .delta.up{ color: var(--sage); }
+  .delta.down{ color: var(--rose); }
+
+  /* ---------- Content grid ---------- */
+  .content{
+    display: grid;
+    grid-template-columns: 1.65fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .panel{
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+  }
+
+  .panel-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 20px 24px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .panel-head h2{ font-size: 19px; }
+  .panel-head .link{ font-size: 13px; color: var(--forest); border-bottom: 1px solid var(--gold); padding-bottom: 1px; }
+
+  /* Roster ledger */
+  table{ width: 100%; border-collapse: collapse; }
+  thead th{
+    text-align: left;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    padding: 12px 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  tbody td{
+    padding: 14px 24px;
+    font-size: 13.5px;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+  }
+  tbody tr:last-child td{ border-bottom: none; }
+  tbody tr:hover{ background: rgba(198, 146, 20, 0.05); }
+
+  .student-cell{ display: flex; align-items: center; gap: 11px; }
+  .student-avatar{
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fraunces', serif; font-weight: 600; font-size: 12.5px;
+    color: var(--forest); background: var(--sage-soft); flex-shrink: 0;
+  }
+  .student-name{ font-weight: 500; }
+  .student-id{ font-size: 12px; color: var(--muted); }
+
+  .grade-pill{
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  .grade-a{ background: var(--sage-soft); color: #3F5C3B; }
+  .grade-b{ background: var(--gold-soft); color: #7A5A0B; }
+  .grade-c{ background: var(--rose-soft); color: #7C3540; }
+
+  .attendance-bar{
+    width: 70px; height: 5px; background: var(--line);
+    border-radius: 3px; overflow: hidden; display: inline-block; vertical-align: middle; margin-right: 8px;
+  }
+  .attendance-bar span{ display: block; height: 100%; background: var(--forest); }
+
+  /* Schedule */
+  .schedule{ padding: 6px 24px 20px; }
+  .schedule-row{
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .schedule-row:last-child{ border-bottom: none; }
+  .schedule-time{ font-size: 12.5px; color: var(--muted); padding-top: 2px; }
+  .schedule-title{ font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .schedule-meta{ font-size: 12.5px; color: var(--muted); }
+  .schedule-tag{
+    display: inline-block; margin-top: 6px;
+    font-size: 11px; padding: 2px 8px; border-radius: 3px;
+    border: 1px solid var(--line); color: var(--muted);
+  }
+
+  /* Attendance chart */
+  .chart-wrap{ padding: 20px 24px 24px; }
+  .bars{
+    display: flex; align-items: flex-end; gap: 10px; height: 120px; margin-bottom: 10px;
+  }
+  .bar-col{ flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; justify-content: flex-end; }
+  .bar{
+    width: 100%; max-width: 26px; border-radius: 3px 3px 0 0;
+    background: var(--forest);
+  }
+  .bar.today{ background: var(--gold); }
+  .bar-label{ font-size: 11px; color: var(--muted); }
+  .chart-foot{
+    display: flex; justify-content: space-between; font-size: 12.5px; color: var(--muted);
+    border-top: 1px solid var(--line); padding-top: 14px; margin-top: 4px;
+  }
+  .chart-foot b{ color: var(--ink); font-weight: 600; }
+
+  @media (max-width: 980px){
+    .layout{ grid-template-columns: 1fr; }
+    .sidebar{ position: static; height: auto; flex-direction: row; align-items: center; overflow-x: auto; }
+    .sidebar nav{ flex-direction: row; }
+    .sidebar-foot{ display: none; }
+    .hero{ grid-template-columns: 1fr 1fr; }
+    .content{ grid-template-columns: 1fr; }
+    main{ padding: 24px 20px 40px; }
+    .search{ width: 200px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition: none !important; }
+  }
+
+  :focus-visible{ outline: 2px solid var(--gold); outline-offset: 2px; }
+
+  /* Students directory extras */
+  .page-head{ margin-bottom: 26px; }
+  .page-head h1{ font-size: 28px; margin-bottom: 6px; }
+  .page-head p{ font-size: 14px; color: var(--muted); max-width: 60ch; }
+
+  .filter-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .filter-chip{
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .filter-chip.active{
+    background: var(--forest);
+    color: #fff;
+    border-color: var(--forest);
+  }
+  .filter-spacer{ flex: 1; }
+  .add-student{
+    background: var(--gold);
+    color: var(--forest);
+    border: none;
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+
+  .panel-head select{
+    font-family: inherit;
+    font-size: 13px;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 6px 10px;
+    background: var(--panel);
+  }
+
+  .pagination{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    font-size: 13px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+  }
+  .pagination .pages{ display: flex; gap: 6px; }
+  .pagination button{
+    width: 28px; height: 28px;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .pagination button.current{ background: var(--forest); color: #fff; border-color: var(--forest); }
+</style>
+</head>
+<body>
+
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <a href="home.html" style="display:flex; align-items:center; gap:11px; color:inherit;">
+        <div class="brand-mark">T</div>
+        <div class="brand-name">TKMCE<span>Student Register</span></div>
+      </a>
+    </div>
+
+    <nav>
+      <a class="nav-item" href="dashboard.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Overview
+      </a>
+      <a class="nav-item active" href="students.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 19c0-3 3-5 8-5s8 2 8 5"/><circle cx="12" cy="8" r="4"/></svg>
+        Students
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 4h16v4H4z"/><path d="M4 12h16v8H4z"/></svg>
+        Classes
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16M4 12h16M4 19h10"/></svg>
+        Attendance
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 20V10M12 20V4M20 20v-7"/></svg>
+        Gradebook
+      </a>
+      <a class="nav-item" href="report.html">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v4h4M9 12h6M9 16h6"/></svg>
+        Reports
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="1"/><path d="M8 2v4M16 2v4M3 10h18"/></svg>
+        Timetable
+      </a>
+      <a class="nav-item" href="#">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><path d="M4.6 15a7.9 7.9 0 010-6l-1.4-1.6 2-3.4L7.3 5A7.9 7.9 0 0113 4l1-2h3l1 2a7.9 7.9 0 015 3l2 1-2 3.4-1 2a7.9 7.9 0 010 6l1.4 1.6-2 3.4L17.7 19a7.9 7.9 0 01-5.7 1"/></svg>
+        Settings
+      </a>
+    </nav>
+
+    <div class="sidebar-foot">
+      Fall term, week 9 of 16<br>
+      <a href="login.html" style="color:#A9BBA4; border-bottom:1px solid rgba(169,187,164,0.4);">Sign out</a>
+    </div>
+  </aside>
+
+  <main>
+    <div class="topbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" placeholder="Search by name, ID or class" />
+      </div>
+      <div class="topbar-right">
+        <div class="term-note">Reporting period ends <strong>18 Oct</strong></div>
+        <div class="avatar">RN</div>
+      </div>
+    </div>
+
+    <div class="page-head">
+      <h1>Students</h1>
+      <p>247 students across 6 classes this term. Filter the register or open a student to see their full attendance and grade history.</p>
+    </div>
+
+    <div class="filter-row">
+      <span class="filter-chip active">All students</span>
+      <span class="filter-chip">On track</span>
+      <span class="filter-chip">Needs follow-up</span>
+      <span class="filter-chip">Excellent</span>
+      <div class="filter-spacer"></div>
+      <button class="add-student">Add student</button>
+    </div>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>Full register</h2>
+        <select>
+          <option>All classes</option>
+          <option>Data Structures — 3B</option>
+          <option>Operating Systems — 3A</option>
+          <option>Database Systems — 2C</option>
+        </select>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Class</th>
+            <th>Attendance</th>
+            <th>Grade</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">MI</div><div><div class="student-name">Meera Iyer</div><div class="student-id">ID 20194</div></div></div></td>
+            <td>Data Structures — 3B</td>
+            <td><span class="attendance-bar"><span style="width:96%"></span></span>96%</td>
+            <td><span class="grade-pill grade-a">A−</span></td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">RK</div><div><div class="student-name">Rohan Kulkarni</div><div class="student-id">ID 20207</div></div></div></td>
+            <td>Operating Systems — 3A</td>
+            <td><span class="attendance-bar"><span style="width:74%"></span></span>74%</td>
+            <td><span class="grade-pill grade-c">C+</span></td>
+            <td>Needs follow-up</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">AT</div><div><div class="student-name">Ananya Thomas</div><div class="student-id">ID 20161</div></div></div></td>
+            <td>Data Structures — 3B</td>
+            <td><span class="attendance-bar"><span style="width:100%"></span></span>100%</td>
+            <td><span class="grade-pill grade-a">A</span></td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">SJ</div><div><div class="student-name">Sameer Joseph</div><div class="student-id">ID 20233</div></div></div></td>
+            <td>Database Systems — 2C</td>
+            <td><span class="attendance-bar"><span style="width:88%"></span></span>88%</td>
+            <td><span class="grade-pill grade-b">B</span></td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">PN</div><div><div class="student-name">Priya Nair</div><div class="student-id">ID 20182</div></div></div></td>
+            <td>Operating Systems — 3A</td>
+            <td><span class="attendance-bar"><span style="width:65%"></span></span>65%</td>
+            <td><span class="grade-pill grade-c">C</span></td>
+            <td>Needs follow-up</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">DV</div><div><div class="student-name">Devika Varma</div><div class="student-id">ID 20145</div></div></div></td>
+            <td>Database Systems — 2C</td>
+            <td><span class="attendance-bar"><span style="width:93%"></span></span>93%</td>
+            <td><span class="grade-pill grade-b">B+</span></td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">VG</div><div><div class="student-name">Vishnu George</div><div class="student-id">ID 20219</div></div></div></td>
+            <td>Data Structures — 3B</td>
+            <td><span class="attendance-bar"><span style="width:81%"></span></span>81%</td>
+            <td><span class="grade-pill grade-b">B−</span></td>
+            <td>On track</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">LF</div><div><div class="student-name">Lisa Fernandez</div><div class="student-id">ID 20176</div></div></div></td>
+            <td>Database Systems — 2C</td>
+            <td><span class="attendance-bar"><span style="width:97%"></span></span>97%</td>
+            <td><span class="grade-pill grade-a">A</span></td>
+            <td>Excellent</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">AK</div><div><div class="student-name">Arjun Krishnan</div><div class="student-id">ID 20250</div></div></div></td>
+            <td>Operating Systems — 3A</td>
+            <td><span class="attendance-bar"><span style="width:58%"></span></span>58%</td>
+            <td><span class="grade-pill grade-c">D+</span></td>
+            <td>Needs follow-up</td>
+          </tr>
+          <tr>
+            <td><div class="student-cell"><div class="student-avatar">NS</div><div><div class="student-name">Neha Suresh</div><div class="student-id">ID 20138</div></div></div></td>
+            <td>Data Structures — 3B</td>
+            <td><span class="attendance-bar"><span style="width:99%"></span></span>99%</td>
+            <td><span class="grade-pill grade-a">A</span></td>
+            <td>Excellent</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="pagination">
+        <span>Showing 1–10 of 247</span>
+        <div class="pages">
+          <button class="current">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>…</button>
+          <button>25</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+</body>
+</html>
