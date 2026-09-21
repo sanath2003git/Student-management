@@ -1,4 +1,4 @@
 # Student-management
 
-Student-management system  for ase assignment- MCA PROJECT
+Student-management system  for Advanced software engineering assignment- MCA PROJECT
 
