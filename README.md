@@ -1,4 +1,4 @@
 # Student-management
 
-Student-management system  for ase assignment
+Student-management system  for Advanced software engineering assignment
 
